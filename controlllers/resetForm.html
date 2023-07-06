@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+</head>
+<body>
+    <form id="myForm" method="post">
+        <label for="email">Enter your Email ID</label>
+        <input type="email" id="email" required>
+        <label for="newPass">Enter New Password</label>
+        <input type="text" id="newPass" required>
+        <input type="submit" value="Submit">
+    </form>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        let newPass = document.getElementById('newPass');
+        let myForm = document.getElementById('myForm');
+        let email = document.getElementById('email')
+
+        myForm.addEventListener('submit', onSubmit)
+
+        async function onSubmit(e){
+            e.preventDefault();
+            let obj = {
+                email: email.value,
+                password: newPass.value
+            }
+            const response = await axios.post('http://localhost:3000/password/resetPassWord',obj)
+            console.log(response);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+  <style>
+    body {
+  font-family: sans-serif;
+}
+
+.container {
+  width: 300px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  margin-top: 20px;
+}
+
+input,label {
+  width: 50%;
+  padding: 10px;
+  margin: 5px;
+  font-family: sans-serif;
+
+}
+
+
+input[type="submit"] {
+  background-color: #008CBA;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form method="post" id="myForm">
+      <label for="username">Email</label>
+      <input type="email" id="email" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+      <input type="submit" value="Login">
+      <button id="fp">Forgot Password</button>
+    </form>
+  </div>
+  <p><a href="C:\Users\aslam's\Documents\MyStuff\Expense Tracker Project\register.html">New User - Sign Up</a></p>
+  <ul id="list">
+
+  </ul>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+  let myForm = document.getElementById('myForm');
+  let ul = document.getElementById('list')
+  let username = document.getElementById("email");
+  let password = document.getElementById("password");
+  let forgot = document.getElementById('fp');
+
+  myForm.addEventListener('submit', onSubmit)
+
+  let myObj = {
+    name: username,
+    password: password
+  }
+  async function onSubmit(e){
+    
+    try{
+      e.preventDefault();
+    myObj.name = username.value;
+    myObj.password = password.value;
+  let post = await axios.post('http://localhost:3000/user/login', myObj);
+  console.log(post.data)
+  localStorage.setItem('token', post.data.token);
+  displayData(post)
+  alert('User logged in successfully');
+  window.location.href = "file:///C:/Users/aslam's/Documents/MyStuff/Expense%20Tracker%20Project/expense.html"
+    }
+  catch(e){
+    displayData(e.response);
+}
+  }
+
+  function displayData(o){
+    let li = document.createElement('li')
+    li.innerHTML ='Status-'+ o.status + ' '+ o.data.message;
+    ul.appendChild(li);
+  }
+  fp.onclick = () => {
+    window.location.href = `file:///C:/Users/aslam's/Documents/MyStuff/Expense%20Tracker%20Project/forgot-password.html`;
+  }
+
+  </script>
+</body>
+</html>
