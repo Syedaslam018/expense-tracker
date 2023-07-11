@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+button {
+    background-color: aquamarine;
+}
+li {
+    padding: 1%;
+}
+li input {
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: #B2F50A;
+}
+li label {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Expense Tracker</h1>
+    </header>
+    <div id="container">    
+        <form class="form-floating" id="myForm" name="myForm" method="post">
+                <label for="expAmount" class="form-label">Expense Amount</label>
+                <input type="number" id="expAmount" class="form-control">
+                <label for="desc" class="form-label">Description</label>
+                <input type="text" id="desc" class="form-control">
+                <label for="category">Category</label>
+                <select name="category" id="category">
+                    <option value="Food">Food</option>
+                    <option value="Clothes">Clothes</option>
+                    <option value="Miscelleneous">Miscelleneous</option>
+                </select>
+            <button type="submit" class="btn" id="btn">Add Expense</button>
+        </form>
+    </div>
+    <div>
+        <button id="rzp-button">Buy Premium Membership</button>
+    </div>
+    <div>
+        <button id="leaderboard" style="visibility: hidden;">Show Leaderboard</button>
+    </div>
+    <div>
+        <p id="premium"></p>
+    </div>
+    <div>
+        <button id="download" style="visibility: hidden;">Download Report</button>
+    </div>
+    <div>
+        <button id="prev-download" style="visibility: hidden;">Old Data</button>
+    </div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <div id="list">
+        <h3>Expense Details</h3> 
+        <label for="numrows">Rows per Page</label>
+        <select name="numrows" id="numrows" required autofocus onchange="limitChange()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+        </select>
+        <ul id="items">
+        </ul>
+        <button id="1" style="visibility: hidden;">1</button><button id="2" style="visibility: hidden;">2</button><button id="3" style="visibility: hidden;">3</button>
+    </div>
+    <div>
+        <ul id="list"></ul>
+    </div>
+    <div>
+        <table bgcolor = 'black' id="oldFiles" style="visibility: hidden;">
+            <tr bgcolor = 'grey'>
+                <th>Date</th>
+                <th>Path</th>
+            </tr>
+            
+        </table>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
