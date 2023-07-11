@@ -20,7 +20,9 @@ const accessLogStream = fs.createWriteStream(
 );
 const app = express();
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false,
+}));
 app.use(morgan('combined', {stream: accessLogStream}))
 
 const userRoutes = require('./routes/user');
@@ -38,6 +40,10 @@ app.use('/purchase', purchaseRoutes);
 app.use('/premium', premiumRoutes);
 app.use('/password', forgotPasswordRoute);
 
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, `public${req.url}`))
+})
+
 
 User.hasMany(Expense)
 Expense.belongsTo(User)
@@ -51,7 +57,7 @@ forgotPassword.belongsTo(User);
 User.hasMany(UserS3Files)
 UserS3Files.belongsTo(User)
 sequelize
- //.sync({force: true})
+//.sync({force: true})
 .sync()
 .then(user => {
     app.listen(process.env.PORT)
