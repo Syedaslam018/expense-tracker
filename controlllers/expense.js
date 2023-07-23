@@ -16,6 +16,9 @@ exports.getExpenses = async (req, res, next) => {
     const userId = req.user.id;
     const filename = `Expenses${userId}/${new Date()}.txt`;
     const fileURL = await S3Services.uploadToS3(stringifiedExpenses, filename)
+    if(!fileURL){
+        throw new Error("Error uploading to s3");
+    }
     await UserS3Files.create({url: fileURL, userId: req.user.id});
     res.status(200).json({fileURL, success: true})
     }
