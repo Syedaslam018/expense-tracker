@@ -32,7 +32,7 @@ try {
             document.getElementById('items').innerHTML = '';
         
         let token = localStorage.getItem('token')
-        const pageLoad =  await axios.get(`http://localhost:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
+        const pageLoad =  await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
          let data = pageLoad.data.data;
          console.log(pageLoad.data.data);
          if(pageLoad.data.hasNext){
@@ -56,7 +56,7 @@ try {
         }
         //adding to crud
         let token = localStorage.getItem('token');
-        let post = await axios.post("http://localhost:3000/expense/add-expense", myObj, {headers: {'Authorization': token }})
+        let post = await axios.post("http://65.2.141.71:3000/expense/add-expense", myObj, {headers: {'Authorization': token }})
         console.log(post.data)
         displayData(post.data);
     
@@ -93,7 +93,7 @@ try {
         button.onclick = async function(e){
             try{
                 let token = localStorage.getItem('token')
-            const del = await axios.delete(`http://localhost:3000/expense/delete-expense/${obj.id}`, {headers: {'Authorization': token }})
+            const del = await axios.delete(`http://65.2.141.71:3000/expense/delete-expense/${obj.id}`, {headers: {'Authorization': token }})
             console.log(del.data);
             ul.removeChild(li);
             }
@@ -109,13 +109,13 @@ try {
        try{
         e.preventDefault();
         let token = localStorage.getItem('token');
-        const response =  await axios.get('http://localhost:3000/purchase/buyPremium', {headers: {'Authorization': token}})
+        const response =  await axios.get('http://65.2.141.71:3000/purchase/buyPremium', {headers: {'Authorization': token}})
         console.log(response.data);
         var options = {
             "key": response.data.key_id,
             "order_id": response.data.order.id,
             "handler": async function(response){
-                    const postData = await axios.post('http://localhost:3000/purchase/paymentStatus', {
+                    const postData = await axios.post('http://65.2.141.71:3000/purchase/paymentStatus', {
                     order_id: options.order_id,
                     payment_id: response.razorpay_payment_id
                 },{
@@ -134,7 +134,7 @@ try {
             rzp1.on('payment.failed', async function(response){
                  try{
                     console.log(response);
-                let failure = await axios.post('http://localhost:3000/purchase/paymentStatus', {
+                let failure = await axios.post('http://65.2.141.71:3000/purchase/paymentStatus', {
                     order_id: options.order_id,
                     payment_id: '-1'
                 },{
@@ -157,7 +157,7 @@ try {
     
         leadButt.onclick = async () => {
             let token = localStorage.getItem('token');
-            const getData = await axios.get("http://localhost:3000/premium/showLeaderBorad", {headers: {'Authorization': token }})
+            const getData = await axios.get("http://65.2.141.71:3000/premium/showLeaderBorad", {headers: {'Authorization': token }})
             console.log(typeof getData.data);
             for(let i=0; i< getData.data.length; i++){
                 displayLeaderBoard(getData.data[i]);
@@ -176,7 +176,7 @@ try {
     download.onclick = async () => {
         try{
             let token = localStorage.getItem('token');
-        const resp = await axios.get('http://localhost:3000/user/download', {headers: {'Authorization': token }})
+        const resp = await axios.get('http://65.2.141.71:3000/user/download', {headers: {'Authorization': token }})
         if(resp.status === 200){
             var a = document.createElement('a');
             a.href = resp.data.fileURL;
@@ -194,7 +194,7 @@ try {
     oldData.onclick = async() => {
         oldFiles.style.visibility = 'visible';
             const token = localStorage.getItem('token');
-            const content = await axios.get('http://localhost:3000/user/oldFiles', {headers: {'Authorization': token }})
+            const content = await axios.get('http://65.2.141.71:3000/user/oldFiles', {headers: {'Authorization': token }})
             console.log(content.data);
             content.data.forEach(element => {
                 let tr = document.createElement('tr')
@@ -230,7 +230,7 @@ try {
             showPremiumUser()
         }
         let limit = localStorage.getItem('limit')
-        const pageLoad = await axios.get(`http://localhost:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token }});
+        const pageLoad = await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token }});
          let data = pageLoad.data.data;
          console.log(pageLoad.data.data);
          if(pageLoad.data.hasNext){
@@ -247,7 +247,7 @@ try {
         document.getElementById('items').innerHTML = '';
         
         let token = localStorage.getItem('token')
-        const pageLoad = await axios.get(`http://localhost:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
+        const pageLoad = await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
          let data = pageLoad.data.data;
          console.log(pageLoad.data.data);
          if(pageLoad.data.hasNext){
@@ -263,7 +263,7 @@ try {
         document.getElementById('items').innerHTML = '';
         
         let token = localStorage.getItem('token');
-        const pageLoad = await axios.get(`http://localhost:3000/expense/get-expense?page=2&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
+        const pageLoad = await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=2&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
         console.log(pageLoad);
         let data = pageLoad.data.data;
         if(pageLoad.data.hasNext){
@@ -277,7 +277,7 @@ try {
     btn3.onclick = async() => {
         document.getElementById('items').innerHTML = '';
         let token = localStorage.getItem('token');
-        const pageLoad = await axios.get(`http://localhost:3000/expense/get-expense?page=3&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
+        const pageLoad = await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=3&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
         console.log(pageLoad);
         let data = pageLoad.data.data;
         if(pageLoad.data.hasNext){
