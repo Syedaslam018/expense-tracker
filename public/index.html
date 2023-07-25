@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+  font-family: sans-serif;
+}
+
+.container {
+  width: 300px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  margin-top: 20px;
+}
+
+input,label {
+  width: 50%;
+  padding: 10px;
+  margin: 5px;
+  font-family: sans-serif;
+
+}
+
+
+input[type="submit"] {
+  background-color: #008CBA;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form method="post" id="myForm">
+      <label for="username">Email</label>
+      <input type="email" id="email" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+      <input type="submit" value="Login">
+      <button id="fp">Forgot Password</button>
+    </form>
+  </div>
+  <p><a href="http://65.2.141.71:3000/Signup/signup.html">New User - Sign Up</a></p>
+  <ul id="list">
+
+  </ul>
+  <script src="login.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</body>
+</html>
