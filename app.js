@@ -41,13 +41,14 @@ app.use('/premium', premiumRoutes);
 app.use('/password', forgotPasswordRoute);
 
 app.use((req, res, next) => {
+    console.log('abcdefghijklmnopqrstuvwxyz');
     res.sendFile(path.join(__dirname, `public${req.url}`))
 })
 
 
 User.hasMany(Expense)
 Expense.belongsTo(User)
-
+cd 
 User.hasMany(Order)
 Order.belongsTo(User);
 
