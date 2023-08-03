@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <style>
+        * {
+            background-color: antiquewhite;
+        }
 button {
     background-color: aquamarine;
 }
@@ -20,6 +23,20 @@ li input {
 li label {
     margin-left: 5px;
     margin-right: 5px;
+}
+table, th, td {
+  border: 1px solid;
+  background-color: #F7EE50;
+}
+td {
+  text-align: center;
+}
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+table:hover {
+    background-color: coral;
 }
 
     </style>
@@ -59,18 +76,22 @@ li label {
         <button id="prev-download" style="visibility: hidden;">Old Data</button>
     </div>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <div>
+        <button id="daily">Daily</button> <button id="monthly">Monthly</button> <button id="yearly">Yearly</button>
+    </div>
     <div id="list">
         <h3>Expense Details</h3> 
         <label for="numrows">Rows per Page</label>
         <select name="numrows" id="numrows" required autofocus onchange="limitChange()">
+            <option value="2">2</option>
             <option value="5">5</option>
             <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
+            <option value="20">20</option>
         </select>
         <ul id="items">
         </ul>
-        <button id="1" style="visibility: hidden;">1</button><button id="2" style="visibility: hidden;">2</button><button id="3" style="visibility: hidden;">3</button>
+        <ul id="pagination">
+        </ul>
     </div>
     <div>
         <ul id="list"></ul>

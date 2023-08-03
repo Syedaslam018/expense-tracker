@@ -8,6 +8,6 @@ let form = document.getElementById('forgotForm');
             email: email.value
         }
             console.log(obj);
-            const post = await axios.post('http://65.2.141.71:3000/password/forgotPassword', obj)
+            const post = await axios.post('http://localhost:3000/password/forgotPassword', obj)
             console.log(post.data);
         }

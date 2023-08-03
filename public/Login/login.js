@@ -16,12 +16,12 @@ let myForm = document.getElementById('myForm');
       e.preventDefault();
     myObj.name = username.value;
     myObj.password = password.value;
-  let post = await axios.post('http://65.2.141.71:3000/user/login', myObj);
+  let post = await axios.post('http://localhost:3000/user/login', myObj);
   console.log(post.data)
   localStorage.setItem('token', post.data.token);
   displayData(post)
   alert('User logged in successfully');
-  window.location.href = "http://65.2.141.71:3000/Expense/expense.html"
+  window.location.href = "http://localhost:3000/Expense/expense.html"
     }
   catch(e){
     displayData(e.response);
@@ -34,5 +34,5 @@ let myForm = document.getElementById('myForm');
     ul.appendChild(li);
   }
   fp.onclick = () => {
-    window.location.href = `http://65.2.141.71:3000/ForgotPassword/forgot-password.html`;
+    window.location.href = `http://localhost:3000/ForgotPassword/forgot-password.html`;
   }

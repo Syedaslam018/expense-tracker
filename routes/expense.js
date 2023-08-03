@@ -12,6 +12,12 @@ router.get('/get-expense',userAuthentication.authenticate, expenseController.get
 
 router.use('/delete-expense/:productId', userAuthentication.authenticate, expenseController.deleteExpense)
 
+router.use('/daily-expenses', userAuthentication.authenticate, expenseController.dailyExpenses)
+
+router.use('/monthly-expenses', userAuthentication.authenticate, expenseController.monthlyExpenses)
+
+router.use('/yearly-expenses', userAuthentication.authenticate, expenseController.yearlyExpenses)
+
 
 
 module.exports = router;

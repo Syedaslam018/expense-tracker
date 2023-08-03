@@ -7,14 +7,48 @@ try {
     let content = document.getElementById('content');
     let oldData = document.getElementById('prev-download')
     let oldFiles = document.getElementById('oldFiles');
-    let btn1 = document.getElementById("1")
-    let btn2 = document.getElementById("2")
-    let btn3 = document.getElementById("3")
     let numRows = document.getElementById('numrows')
+    let dailyButton = document.getElementById('daily')
+    let monthlyButton = document.getElementById('monthly')
+    let yearlyButton = document.getElementById('yearly')
     
     //eventListners
     myForm.addEventListener('submit',onSubmit);
-    
+    dailyButton.addEventListener('click',dailyFunc)
+    monthlyButton.addEventListener('click', monthlyFunc)
+    yearlyButton.addEventListener('click', yearlyFunc)
+
+    async function dailyFunc(e) {
+        e.preventDefault()
+        let token = localStorage.getItem('token');
+        let dailyData = await axios.get(`http://localhost:3000/expense/daily-expenses`, {headers: {'Authorization': token }})
+        console.log(dailyData)
+        let p = document.createElement('p')
+        p.innerHTML=`${dailyData.data.data[0].date} ----- ${dailyData.data.data[0].total}`
+        dailyButton.appendChild(p)
+    }
+    async function monthlyFunc(e) {
+        e.preventDefault()
+        let token = localStorage.getItem('token');
+        let monthlyData = await axios.get(`http://localhost:3000/expense/monthly-expenses`, {headers: {'Authorization': token }})
+        console.log(monthlyData);
+        for(let i=0; i<monthlyData.data.data.length; i++){
+            let p = document.createElement('p')
+            p.innerHTML=`${monthlyData.data.data[i].month} ----- ${monthlyData.data.data[i].total}`
+            monthlyButton.appendChild(p)
+        }
+    }
+    async function yearlyFunc(e) {
+        e.preventDefault()
+        let token = localStorage.getItem('token');
+        let yearlyData = await axios.get(`http://localhost:3000/expense/yearly-expenses`, {headers: {'Authorization': token }})
+        console.log(yearlyData);
+        for(let i=0; i<yearlyData.data.data.length; i++){
+            let p = document.createElement('p')
+            p.innerHTML=`${yearlyData.data.data[i].year} ----- ${yearlyData.data.data[i].total}`
+            yearlyButton.appendChild(p)
+        }
+    }
     
     //input values
     let expAmount= document.getElementById('expAmount');
@@ -32,14 +66,9 @@ try {
             document.getElementById('items').innerHTML = '';
         
         let token = localStorage.getItem('token')
-        const pageLoad =  await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
+        const pageLoad =  await axios.get(`http://localhost:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
          let data = pageLoad.data.data;
          console.log(pageLoad.data.data);
-         if(pageLoad.data.hasNext){
-            btn1.style.visibility = 'visible'
-            btn2.style.visibility = 'visible'
-         }
-    
         for(var i=0; i<data.length; i++){
             displayData(data[i]);
         }
@@ -56,8 +85,9 @@ try {
         }
         //adding to crud
         let token = localStorage.getItem('token');
-        let post = await axios.post("http://65.2.141.71:3000/expense/add-expense", myObj, {headers: {'Authorization': token }})
+        let post = await axios.post("http://localhost:3000/expense/add-expense", myObj, {headers: {'Authorization': token }})
         console.log(post.data)
+        ul.removeChild(ul.lastElementChild);
         displayData(post.data);
     
         //clearing the form
@@ -93,7 +123,7 @@ try {
         button.onclick = async function(e){
             try{
                 let token = localStorage.getItem('token')
-            const del = await axios.delete(`http://65.2.141.71:3000/expense/delete-expense/${obj.id}`, {headers: {'Authorization': token }})
+            const del = await axios.delete(`http://localhost:3000/expense/delete-expense/${obj.id}`, {headers: {'Authorization': token }})
             console.log(del.data);
             ul.removeChild(li);
             }
@@ -109,13 +139,13 @@ try {
        try{
         e.preventDefault();
         let token = localStorage.getItem('token');
-        const response =  await axios.get('http://65.2.141.71:3000/purchase/buyPremium', {headers: {'Authorization': token}})
+        const response =  await axios.get('http://localhost:3000/purchase/buyPremium', {headers: {'Authorization': token}})
         console.log(response.data);
         var options = {
             "key": response.data.key_id,
             "order_id": response.data.order.id,
             "handler": async function(response){
-                    const postData = await axios.post('http://65.2.141.71:3000/purchase/paymentStatus', {
+                    const postData = await axios.post('http://localhost:3000/purchase/paymentStatus', {
                     order_id: options.order_id,
                     payment_id: response.razorpay_payment_id
                 },{
@@ -134,7 +164,7 @@ try {
             rzp1.on('payment.failed', async function(response){
                  try{
                     console.log(response);
-                let failure = await axios.post('http://65.2.141.71:3000/purchase/paymentStatus', {
+                let failure = await axios.post('http://localhost:3000/purchase/paymentStatus', {
                     order_id: options.order_id,
                     payment_id: '-1'
                 },{
@@ -157,7 +187,7 @@ try {
     
         leadButt.onclick = async () => {
             let token = localStorage.getItem('token');
-            const getData = await axios.get("http://65.2.141.71:3000/premium/showLeaderBorad", {headers: {'Authorization': token }})
+            const getData = await axios.get("http://localhost:3000/premium/showLeaderBorad", {headers: {'Authorization': token }})
             console.log(typeof getData.data);
             for(let i=0; i< getData.data.length; i++){
                 displayLeaderBoard(getData.data[i]);
@@ -176,7 +206,7 @@ try {
     download.onclick = async () => {
         try{
             let token = localStorage.getItem('token');
-        const resp = await axios.get('http://65.2.141.71:3000/user/download', {headers: {'Authorization': token }})
+        const resp = await axios.get('http://localhost:3000/user/download', {headers: {'Authorization': token }})
         if(resp.status === 200){
             var a = document.createElement('a');
             a.href = resp.data.fileURL;
@@ -194,16 +224,15 @@ try {
     oldData.onclick = async() => {
         oldFiles.style.visibility = 'visible';
             const token = localStorage.getItem('token');
-            const content = await axios.get('http://65.2.141.71:3000/user/oldFiles', {headers: {'Authorization': token }})
+            const content = await axios.get('http://localhost:3000/user/oldFiles', {headers: {'Authorization': token }})
             console.log(content.data);
             content.data.forEach(element => {
                 let tr = document.createElement('tr')
                 let date_td = document.createElement('td')
                 let url_td = document.createElement('td');
                 date_td.innerHTML = element.createdAt;
-                url_td.innerHTML = element.url;
+                url_td.innerHTML = `<a href = ${element.url}>LINK!</a>`;
                 oldFiles.appendChild(tr)
-                tr.style.backgroundColor = 'lightgrey'
                 tr.appendChild(date_td)
                 tr.appendChild(url_td);
             });
@@ -230,62 +259,51 @@ try {
             showPremiumUser()
         }
         let limit = localStorage.getItem('limit')
-        const pageLoad = await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token }});
+        const pageLoad = await axios.get(`http://localhost:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token }});
          let data = pageLoad.data.data;
-         console.log(pageLoad.data.data);
-         if(pageLoad.data.hasNext){
-            btn1.style.visibility = 'visible'
-            btn2.style.visibility = 'visible'
-         }
-    
+         console.log(pageLoad.data);
+         showPagination(pageLoad.data)
         for(var i=0; i<data.length; i++){
             displayData(data[i]);
         }
            
     })
-    btn1.onclick = async () => {
-        document.getElementById('items').innerHTML = '';
+
+    function showPagination(object)
+    {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+        if(object.hasPreviousPage)
+        {
+            const btn2=document.createElement('button');
+            btn2.innerHTML = object.previousPage;
+            btn2.addEventListener('click',() => getExpenses(object.previousPage))
+            pagination.appendChild(btn2);
+        }
         
-        let token = localStorage.getItem('token')
-        const pageLoad = await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=1&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
-         let data = pageLoad.data.data;
-         console.log(pageLoad.data.data);
-         if(pageLoad.data.hasNext){
-            btn1.style.visibility = 'visible'
-            btn2.style.visibility = 'visible'
-         }
-    
-        for(var i=0; i<data.length; i++){
-            displayData(data[i]);
-        }
-    }
-    btn2.onclick = async() => {
-        document.getElementById('items').innerHTML = '';
+            const btn1=document.createElement('button');
+            btn1.innerHTML = `<h3>${object.currentPage}</h3>`
+            btn1.addEventListener('click',() => getExpenses(object.currentPage))
+            pagination.appendChild(btn1);
         
-        let token = localStorage.getItem('token');
-        const pageLoad = await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=2&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
-        console.log(pageLoad);
-        let data = pageLoad.data.data;
-        if(pageLoad.data.hasNext){
-            btn3.style.visibility = 'visible'
-         }
-        for(var i=0; i<data.length; i++){
-            displayData(data[i]);
+        if(object.hasNext)
+        {
+            const btn3=document.createElement('button');
+            btn3.innerHTML = object.nextPage;
+            btn3.addEventListener('click',() => getExpenses(object.nextPage))
+            pagination.appendChild(btn3);
         }
-    }
     
-    btn3.onclick = async() => {
-        document.getElementById('items').innerHTML = '';
-        let token = localStorage.getItem('token');
-        const pageLoad = await axios.get(`http://65.2.141.71:3000/expense/get-expense?page=3&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token}});
-        console.log(pageLoad);
-        let data = pageLoad.data.data;
-        if(pageLoad.data.hasNext){
-            btn3.style.visibility = 'visible'
-         }
-        for(var i=0; i<data.length; i++){
-            displayData(data[i]);
+    }
+    async function getExpenses(page){
+        ul.innerHTML='';
+        const token = localStorage.getItem('token');
+        const data = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}&limit=${localStorage.getItem('limit')}`, {headers: {'Authorization': token }})
+        for(let i=0; i< data.data.data.length; i++){
+            displayData(data.data.data[i])
         }
+        showPagination(data.data)
+        console.log(data.data.data);
     }
     function displayLeaderBoard(obj){
         console.log(obj)
