@@ -131,7 +131,7 @@ try{
 }
 catch(e){
     console.log(e)
-    res.status(500).json({message:'error occured', success:false, error: e})
+    res.status(500).json({message:'error occured!!', success:false, error: e})
 }
 }
 
