@@ -28,7 +28,7 @@ async function onSubmit(e){
     //console.log(myObj)
 
     //adding to crud
-    let post = await axios.post("http://65.2.141.71:3000/user/signup", myObj)
+    let post = await axios.post("http://localhost:3000/user/signup", myObj)
     console.log(post.data);
     //displayData(post.data);
 
